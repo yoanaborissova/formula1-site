@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter} from 'react-router-dom';                                
+import { Link } from 'react-router-dom';                                
 
 
 class ArticleDetails extends Component {
@@ -42,16 +42,16 @@ class ArticleDetails extends Component {
           <div>
             <img className="img-article" src={this.state.selectedArticle.imageUrl} />
           </div>  
-            {this.props.isAdmin ? <a href="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'article', 'delete', this.state.selectedArticle._id)} className="button">Delete</a> : null}
-            {this.props.isAdmin ? <a href={"/article/edit/" + this.state.selectedArticle._id} className="button">Edit</a> : null}
-            {this.props.username ? <a href={"/article/comment/" + this.state.selectedArticle._id} className="button">Add a comment</a> : null}
+            {this.props.isAdmin ? <Link to="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'article', 'delete', this.state.selectedArticle._id)} className="button">Delete</Link> : null}
+            {this.props.isAdmin ? <Link to={"/article/edit/" + this.state.selectedArticle._id} className="button">Edit</Link> : null}
+            {this.props.username ? <Link to={"/article/comment/" + this.state.selectedArticle._id} className="button">Add a comment</Link> : null}
         </div>
         <div className="article">
         <h4>Comments:</h4>
-        
+        {!this.props.username ? <h6><Link to="/login">Login</Link> to add comments!</h6> : null}
         {
         this.state.articleComments.map(c => 
-          <div className="comment">
+          <div className="comment" key={c._id}>
             <h6>{c.user}:</h6>
             <div>
             <p>{c.content}</p>
@@ -75,4 +75,4 @@ class ArticleDetails extends Component {
   }
 }
 
-export default withRouter(ArticleDetails);
+export default ArticleDetails;

@@ -19,7 +19,7 @@ class AddProduct extends Component {
             <main id="site-content">
                 <section className="basic" id="welcomeAnonymous">
                     <section className="login" id="loginView">
-                        <form action="#" method="post" id="formLogin">
+                        <form onSubmit={(event) => this.props.handleCreateSubmit(event, this.state, 'product')}>
                             <p className="field">
                                 <label htmlFor="name">Name</label>
                                 <span className="input">
@@ -44,7 +44,7 @@ class AddProduct extends Component {
                             <p className="field">
                                 <label htmlFor="image">Image</label>
                                 <span className="input">
-                                    <input type="text" onChange={this.handleChange} name="imageURL" id="image" placeholder="Image" />
+                                    <input type="text" onChange={this.handleChange} name="imageUrl" id="image" placeholder="Image" />
                                     <span className="actions" />
                                 </span>
                             </p>

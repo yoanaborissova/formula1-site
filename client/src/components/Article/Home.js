@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'; 
 
 class Home extends Component {
   constructor(props) {
@@ -23,14 +24,14 @@ class Home extends Component {
   render() {
     return (
         <main id="site-content">
-        {this.props.isAdmin ? <form method="GET" action="/article/add" className="button-form"><button id="button-add" className="button">Add article</button></form> : null}
+        {this.props.isAdmin ? <form method="GET" action="/article/add" className="button-form" id="article-add"><button className="button" id="button-add">Add article</button></form> : null}
         {
         this.state.articles.map(a => 
           <div className="article" key={a._id}>
             <h2>{a.title}</h2>
             <img className="img" src={a.imageUrl}></img>
             <p>{a.content.substr(0, a.content.length / 2) + '...'}</p>
-            <a href={"/article/details/" + a._id} className="button">More</a>
+            <Link to={"/article/details/" + a._id} className="button">More</Link>
           </div>
         )
         }

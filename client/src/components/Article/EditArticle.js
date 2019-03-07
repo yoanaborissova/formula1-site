@@ -49,7 +49,7 @@ class EditArticle extends Component {
                             <p className="field">
                                 <label htmlFor="name">Content</label>
                                 <span className="input">
-                                    <input onChange={this.handleChange} type="text" name="content" defaultValue={this.state.selectedArticle.content}/>
+                                    <input onChange={this.handleChange} type="text" name="content" defaultValue={this.state.selectedArticle.content} />
                                     <span className="actions" />
                                 </span>
                             </p>

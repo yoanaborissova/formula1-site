@@ -1,61 +1,56 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Shop extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            articles: this.props.products,
+            products: this.props.products,
         };
     }
 
-    //   componentDidMount() {
-    //     fetch('http://localhost:9999/feed/movies')
-    //       .then(response => response.json())
-    //       .then(body => {
-    //         if (body.movies) {
-    //           this.setState({ movies: body.movies });
-    //         }
-    //       });
-    //   }
+    componentDidMount = async () => {
+        let data = await fetch('http://localhost:9999/feed/products', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.json());
+        this.setState({products: data.resProducts})
+        console.log(this.state.products);
+      };
 
     render() {
         return (
             <main id="site-content">
                 <section className="dashboard" id="dashboardView">
                     <h1>Shop</h1>
-                    {this.props.isAdmin ? 
-                    <nav className="navbar">
-                        <ul className="categories">
-                            <li><a href="/product/add">Add new product</a></li>
-                        </ul>
-                    </nav>
-                    : null}
+                    {this.props.username ? 
+                        <nav className="navbar">
+                            <ul className="categories">
+                                {this.props.isAdmin ? <li><Link to="/product/add">Add new product</Link></li> : null}
+                                {this.props.isAdmin ? <li><Link to="/allorders">All users orders</Link></li> : null}
+                                {!this.props.isAdmin ? <li><Link to="/myorders">My orders</Link></li> : null}
+                            </ul>
+                        </nav>
+                     : null}    
                     <ul className="products">
-                        <li className="product">
-                            <h3>Ferrari Cup</h3>
-                            <p>15$</p>
-                            <p className="img"><img src="https://i.pinimg.com/originals/05/80/98/058098803a2bb5488b02ab08660da0d3.jpg" /></p>
-                            <div className="pet-info">
-                                <a href="#"><button className="button">Details</button></a>
-                            </div>
-                        </li>
-                        <li className="product">
-                            <h3>McLaren Keychain</h3>
-                            <p>20$</p>
-                            <p className="img"><img src="http://www.schumacher-fanclub.com/mclaren-mercedes-pictures/ml8911-mclaren-mercedes-f1-car-key-chain.jpg" /></p>
-                            <div className="pet-info">
-                                <a href="#"><button className="button">Details</button></a>
-                            </div>
-                        </li>
-                        <li className="product">
-                            <h3>Mercedes Keychain</h3>
-                            <p>20$</p>
-                            <p className="img"><img src="https://store.bahraingp.com/464-thickbox_default/mercedes-amg-f1-team-keyring.jpg" /></p>
-                            <div className="pet-info">
-                                <a href="#"><button className="button">Details</button></a>
-                            </div>
-                        </li>
+                        {
+                        this.state.products.length > 0 ?
+                        this.state.products.map(p =>
+                            <li className="product" key={p._id}>
+                                <h3>{p.name}</h3>
+                                <p>{p.price}$</p>
+                                <p className="img"><img src={p.imageUrl} /></p>
+                                <div>
+                                    <Link to={"product/details/" + p._id} className="button">Details</Link>                                    </div>
+                                </li>
+                            )
+                            : 
+                            <h3>No products at the shop.</h3> 
+                        }
                     </ul>
                 </section>
             </main>
