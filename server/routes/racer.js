@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const racerController = require('../controllers/racer');
-const isAuth = require('../middleware/is-auth');
+const restrictedPages = require('../middleware/restrictedPages');
 
 router.get('/racers', racerController.getRacers);
-router.post('/racer/create', racerController.createRacer);
+router.post('/racer/create', restrictedPages.isAdmin, racerController.createRacer);
 router.get('/racer/details/:id', racerController.racerDetails);
-router.post('/racer/edit/:id', racerController.editRacer);
-router.post('/racer/delete/:id', racerController.deleteRacer);
+router.post('/racer/edit/:id', restrictedPages.isAdmin, racerController.editRacer);
+router.post('/racer/delete/:id', restrictedPages.isAdmin, racerController.deleteRacer);
 
 module.exports = router;

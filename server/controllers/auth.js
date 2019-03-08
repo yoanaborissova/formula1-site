@@ -42,6 +42,13 @@ module.exports = {
     } else {
         const error = new Error('Passwords do not match');
         error.statusCode = 401;
+
+        res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
+
         throw error;
     }
     }
@@ -65,7 +72,8 @@ module.exports = {
 
         const token = jwt.sign({ 
           username: user.username,
-          userId: user._id.toString()
+          userId: user._id.toString(),
+          isAdmin: user.roles.indexOf('Admin') !== 0
         }
         , 'somesupersecret'
         , { expiresIn: '1h' });
@@ -80,11 +88,11 @@ module.exports = {
            });
       })
       .catch(error => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-
-        next(error);
+        res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
       })
   }
 };

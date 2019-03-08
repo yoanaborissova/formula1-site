@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Router, Link, Route, Switch, Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,6 +38,7 @@ class App extends Component {
     this.state = {
       username: null,
       isAdmin: false,
+      token: '',
       articles: [],
       teams: [],
       racers: [],
@@ -79,7 +80,9 @@ class App extends Component {
     await fetch('http://localhost:9999/auth/sign' + (isSignUp ? 'up' : 'in'), {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    }
     })
       .then(rawData => rawData.json())
       .then(responseBody => {
@@ -87,6 +90,7 @@ class App extends Component {
           this.setState({
             username: responseBody.username
           })
+
           this.state.history.push('/');
           if (responseBody.isAdmin) {
             this.setState({
@@ -99,9 +103,7 @@ class App extends Component {
         
           toast.success(`Welcome ${responseBody.username}!`);
         } else {
-          toast.error(responseBody.message, {
-            closeButton: false
-          })
+          toast.error(responseBody.message)
         }
       })
   }
@@ -111,23 +113,21 @@ class App extends Component {
     fetch('http://localhost:9999/feed/'+ element + '/create', {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json',
+                 'Authorization': 'Bearer ' + localStorage.getItem('token')
+     }
     })
       .then(rawData => rawData.json())
       .then(responseBody => {
-        if (!responseBody.errors) {
-          toast.success(responseBody.message, {
-            closeButton: false
-          });
+        if (!responseBody.error) {
+          toast.success(responseBody.message);
         } else {
-          toast.error(responseBody.message, {
-            closeButton: false
-          })
+          toast.error(responseBody.message)
         }
 
         if (element === 'article'){
-          this.state.history.push('/');
-          this.forceUpdate();
+          // this.state.history.push('/');
+          // this.forceUpdate();
         } else if (element === 'product'){
           this.state.history.push('/shop');
           this.forceUpdate();
@@ -150,11 +150,15 @@ class App extends Component {
     fetch('http://localhost:9999/feed/'+ element + '/' + action + '/' + id, {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+       },
+      
     })
       .then(rawData => rawData.json())
       .then(responseBody => {
-        if (!responseBody.errors) {
+        if (!responseBody.error) {
           toast.success(responseBody.message);
         } else {
           toast.error(responseBody.message)
@@ -194,6 +198,7 @@ class App extends Component {
   logout(event) {
     event.preventDefault();
 
+    window.sessionStorage.clear();
     localStorage.removeItem('username');
     localStorage.removeItem('userId');
     localStorage.removeItem('token');
@@ -206,9 +211,7 @@ class App extends Component {
 
     this.state.history.push('/');
 
-    toast.success('Logout successful!',  {
-      closeButton: false
-    });
+    toast.success('Logout successful!');
   }
 
   render() {
@@ -220,28 +223,28 @@ class App extends Component {
             <Navbar username={this.state.username} isAdmin={this.state.isAdmin} logout = {this.logout} {...this.state}/>
             <Switch>
               <Route render={(props) => <Home isAdmin={this.state.isAdmin} articles={this.state.articles} {...this.state} {...props}/>} path="/" exact/>
-              <Route render={(props) => <Login {...props} handleSubmit={this.handleSubmit.bind(this)} handleChange={this.handleChange}/>} path="/login" /> 
-              <Route render={(props) => <Register {...props} handleSubmit={this.handleSubmit.bind(this)} handleChange={this.handleChange}/>} path="/register" />
+              <Route render={(props) => !this.state.username ? <Login {...props} handleSubmit={this.handleSubmit.bind(this)} handleChange={this.handleChange}/> : <Redirect to={{ pathname: '/' }} />} path="/login" /> 
+              <Route render={(props) => !this.state.username ? <Register {...props} handleSubmit={this.handleSubmit.bind(this)} handleChange={this.handleChange}/> : <Redirect to={{ pathname: '/' }} />} path="/register" />
               <Route render={(props) => <Teams isAdmin={this.state.isAdmin} teams={this.state.teams} {...this.state} {...props}/>} path="/teams" exact/>
               <Route render={(props) => <Racers isAdmin={this.state.isAdmin} teams={this.state.racers} {...this.state} {...props}/>} path="/racers" exact/>
               <Route render={(props) => <Shop isAdmin={this.state.isAdmin} products={this.setState.products} {...this.state} {...props}/>} path="/shop" exact/>
-              <Route render={(props) => <AllOrders isAdmin={this.state.isAdmin} orders={this.setState.orders} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} {...props}/>} path="/allorders" exact/>
-              <Route render={(props) => <MyOrders isAdmin={this.state.isAdmin} orders={this.setState.orders} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} {...props}/>} path="/myorders" exact/>
-              <Route render={(props) => <AddArticle {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/>} path="/article/add" /> 
-              <Route render={(props) => <AddTeam {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/>} path="/team/add" />  
-              <Route render={(props) => <AddRacer {...props} handleChange={this.handleChange}  handleCreateSubmit={this.handleCreateSubmit}/>} path="/racer/add" />
-              <Route render={(props) => <AddProduct {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/>} path="/product/add" />  
+              <Route render={(props) => this.state.isAdmin ? <AllOrders isAdmin={this.state.isAdmin} orders={this.setState.orders} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} {...props}/>  : <Redirect to={{ pathname: '/login' }} />} path="/allorders" exact/>
+              <Route render={(props) => this.state.username ? <MyOrders isAdmin={this.state.isAdmin} orders={this.setState.orders} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} {...props}/> : <Redirect to={{ pathname: '/login' }} />} path="/myorders" exact/>
+              <Route render={(props) => this.state.isAdmin ? <AddArticle {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/> : <Redirect to={{ pathname: '/login' }} />} path="/article/add" /> 
+              <Route render={(props) => this.state.isAdmin ? <AddTeam {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/> : <Redirect to={{ pathname: '/login' }} />} path="/team/add" />  
+              <Route render={(props) => this.state.isAdmin ? <AddRacer {...props} handleChange={this.handleChange}  handleCreateSubmit={this.handleCreateSubmit}/> : <Redirect to={{ pathname: '/login' }} />} path="/racer/add" />
+              <Route render={(props) => this.state.isAdmin ? <AddProduct {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/> : <Redirect to={{ pathname: '/login' }} />} path="/product/add" />  
               <Route render={(props) => <ArticleDetails {...props} selectedArticle={this.selectedArticle} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/article/details/:id" />
               <Route render={(props) => <TeamDetails {...props} selectedTeam={this.selectedTeam} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/team/details/:id" />
               <Route render={(props) => <RacerDetails {...props} selectedRacer={this.selectedRacer} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/racer/details/:id" />
               <Route render={(props) => <AddProduct {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/>} path="/product/add" />  
               <Route render={(props) => <ProductDetails {...props} selectedProduct={this.selectedProduct} handleCreateSubmit={this.handleCreateSubmit} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/product/details/:id" />
-              <Route render={(props) => <AddComment {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit} username={this.username} {...this.state} />} path="/article/comment/:id" />
-              <Route render={(props) => <EditArticle {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} selectedArticle={this.selectedArticle} {...this.state} />} path="/article/edit/:id" />
-              <Route render={(props) => <EditComment {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/comment/edit/:id" />
-              <Route render={(props) => <EditTeam {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/team/edit/:id" />
-              <Route render={(props) => <EditProduct {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/product/edit/:id" />
-              <Route render={(props) => <EditRacer {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/racer/edit/:id" />
+              <Route render={(props) => this.state.username ? <AddComment {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit} username={this.username} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/article/comment/:id" />
+              <Route render={(props) => this.state.isAdmin ? <EditArticle {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} selectedArticle={this.selectedArticle} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/article/edit/:id" />
+              <Route render={(props) => this.state.username ? <EditComment {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/comment/edit/:id" />
+              <Route render={(props) => this.state.isAdmin ? <EditTeam {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/team/edit/:id" />
+              <Route render={(props) => this.state.isAdmin ? <EditProduct {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/product/edit/:id" />
+              <Route render={(props) => this.state.isAdmin ? <EditRacer {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/racer/edit/:id" />
               <Route render={() => <About />} path="/about" />     
             </Switch>
             <Footer />

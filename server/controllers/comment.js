@@ -10,10 +10,11 @@ module.exports = {
           .json({ message: 'Fetched comment successfully.', comment });
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        next(error);
+        res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
       });
   },
   createComment: (req, res) => {
@@ -30,10 +31,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      console.error;
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   },
   editComment: (req, res) => {
@@ -53,10 +55,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      throw error;
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   }, 
   deleteComment: (req, res) => {
@@ -80,10 +83,11 @@ module.exports = {
           })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      throw error;
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   }
 }

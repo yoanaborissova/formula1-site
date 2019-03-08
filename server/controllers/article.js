@@ -10,11 +10,12 @@ module.exports = {
           .status(200)
           .json({ message: 'Fetched articles successfully.', resArticles });
       })
-      .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        next(error);
+      .catch((error, res) => {
+        res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
       });
   },
   createArticle: (req, res) => {
@@ -28,10 +29,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   },
   articleDetails: (req, res) => {
@@ -55,10 +57,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      throw error;
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   },
   editArticle: (req, res) => {
@@ -80,10 +83,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      throw error;
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   }, 
   deleteArticle: (req, res) => {
@@ -102,10 +106,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      throw error;
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   }
 }

@@ -10,7 +10,7 @@ class ArticleDetails extends Component {
       selectedArticle: this.props.selectedArticle,
       articleComments: this.props.articleComments,
       article: null,
-      Authorization: localStorage.getItem('token')
+
     };
   }
 

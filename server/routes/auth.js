@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const { body } = require('express-validator/check');
 const authController = require('../controllers/auth');
-const User = require('../models/User');
+const restrictedPages = require('../middleware/restrictedPages');
 
-router.post('/signup', 
+router.post('/signup', restrictedPages.isAnonymous,
   [
     body('password')
       .trim()
@@ -16,6 +16,6 @@ router.post('/signup',
       .withMessage('Please enter a valid username.')
   ]
 , authController.signUp);
-router.post('/signin', authController.signIn);
+router.post('/signin', restrictedPages.isAnonymous, authController.signIn);
 
 module.exports = router;

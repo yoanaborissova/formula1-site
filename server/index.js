@@ -4,11 +4,14 @@ const articleRoutes = require('./routes/article');
 const teamRoutes = require('./routes/team');
 const racerRoutes = require('./routes/racer');
 const commentRoutes = require('./routes/comment');
+const productRoutes = require('./routes/product');
+const orderRoutes = require('./routes/order');
 const authRoutes = require('./routes/auth');
 require('./database/database')();
 const port = 9999;
 const app = express();
 const cors = require('cors');
+const auth = require('./middleware/is-auth');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,7 +25,10 @@ app.use('/feed', articleRoutes);
 app.use('/feed', teamRoutes);
 app.use('/feed', racerRoutes);
 app.use('/feed', commentRoutes);
+app.use('/feed', productRoutes);
+app.use('/feed', orderRoutes);
 app.use('/auth', authRoutes);
+app.use(auth);
 
 // General error handling
 app.use((error, req, res, next) => {

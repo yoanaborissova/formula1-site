@@ -14,6 +14,10 @@ const productSchema = new Schema({
     type: Schema.Types.Number,
     required: true
   },
+  imageUrl: {
+    type: Schema.Types.String,
+    required: true
+  },
   date: {
     type: Schema.Types.Date,
     default: Date.now 
