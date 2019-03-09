@@ -4,7 +4,8 @@ module.exports = {
   getTeams: (req, res) => {
     Team.find()
       .then((teams) => {
-        let resTeams = teams.sort((a, b) => b.points - a.points)  
+        let resTeams = teams.sort((a, b) => b.points - a.points);
+
         res
           .status(200)
           .json({ message: 'Fetched teams successfully.', resTeams });
@@ -13,11 +14,12 @@ module.exports = {
         if (!error.statusCode) {
           error.statusCode = 500;
         }
-        next(error);
+        console.log(error);
       });
   },
   createTeam: (req, res) => {
     const teamObj = req.body;
+    teamObj.racers = teamObj.racers.split(',').join(', ');
     Team.create(teamObj)
     .then((team) => {
       res.status(200)

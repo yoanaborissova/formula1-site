@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const teamController = require('../controllers/team');
-const isAuth = require('../middleware/is-auth');
 const restrictedPages = require('../middleware/restrictedPages');
 
 router.get('/teams', teamController.getTeams);
