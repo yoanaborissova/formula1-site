@@ -6,7 +6,8 @@ class EditArticle extends Component {
 
         this.state = {
             content: null,
-            selectedArticle: null 
+            selectedArticle: null,
+            user: this.props.username
         }
 
         this.handleChange = this.props.handleChange.bind(this);

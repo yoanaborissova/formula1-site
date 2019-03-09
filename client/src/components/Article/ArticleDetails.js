@@ -10,7 +10,7 @@ class ArticleDetails extends Component {
       selectedArticle: this.props.selectedArticle,
       articleComments: this.props.articleComments,
       article: null,
-
+      user: this.props.username
     };
   }
 
@@ -52,7 +52,7 @@ class ArticleDetails extends Component {
         {
         this.state.articleComments.map(c => 
           <div className="comment" key={c._id}>
-            <h6>{c.user}:</h6>
+            <h6>{c.date.substr(0, 10)}: {c.user}:</h6>
             <div>
             <p>{c.content}</p>
             </div>
@@ -69,7 +69,6 @@ class ArticleDetails extends Component {
         }
         
         </div>
-
       </main>  
     );
   }

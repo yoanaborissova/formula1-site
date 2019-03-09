@@ -11,7 +11,6 @@ require('./database/database')();
 const port = 9999;
 const app = express();
 const cors = require('cors');
-const auth = require('./middleware/is-auth');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,7 +27,6 @@ app.use('/feed', commentRoutes);
 app.use('/feed', productRoutes);
 app.use('/feed', orderRoutes);
 app.use('/auth', authRoutes);
-app.use(auth);
 
 // General error handling
 app.use((error, req, res, next) => {

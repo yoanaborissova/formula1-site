@@ -52,6 +52,7 @@ class App extends Component {
       history: createBrowserHistory()
     }
 
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.logout = this.logout.bind(this); 
     this.handleCreateSubmit = this.handleCreateSubmit.bind(this);
     this.handleEditDeleteSubmit = this.handleEditDeleteSubmit.bind(this);
@@ -126,8 +127,8 @@ class App extends Component {
         }
 
         if (element === 'article'){
-          // this.state.history.push('/');
-          // this.forceUpdate();
+          this.state.history.push('/');
+          this.forceUpdate();
         } else if (element === 'product'){
           this.state.history.push('/shop');
           this.forceUpdate();
@@ -223,8 +224,8 @@ class App extends Component {
             <Navbar username={this.state.username} isAdmin={this.state.isAdmin} logout = {this.logout} {...this.state}/>
             <Switch>
               <Route render={(props) => <Home isAdmin={this.state.isAdmin} articles={this.state.articles} {...this.state} {...props}/>} path="/" exact/>
-              <Route render={(props) => !this.state.username ? <Login {...props} handleSubmit={this.handleSubmit.bind(this)} handleChange={this.handleChange}/> : <Redirect to={{ pathname: '/' }} />} path="/login" /> 
-              <Route render={(props) => !this.state.username ? <Register {...props} handleSubmit={this.handleSubmit.bind(this)} handleChange={this.handleChange}/> : <Redirect to={{ pathname: '/' }} />} path="/register" />
+              <Route render={(props) => !this.state.username ? <Login {...props} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/> : <Redirect to={{ pathname: '/' }} />} path="/login" /> 
+              <Route render={(props) => !this.state.username ? <Register {...props} handleSubmit={this.handleSubmit} handleChange={this.handleChange}/> : <Redirect to={{ pathname: '/' }} />} path="/register" />
               <Route render={(props) => <Teams isAdmin={this.state.isAdmin} teams={this.state.teams} {...this.state} {...props}/>} path="/teams" exact/>
               <Route render={(props) => <Racers isAdmin={this.state.isAdmin} teams={this.state.racers} {...this.state} {...props}/>} path="/racers" exact/>
               <Route render={(props) => <Shop isAdmin={this.state.isAdmin} products={this.setState.products} {...this.state} {...props}/>} path="/shop" exact/>
@@ -234,14 +235,14 @@ class App extends Component {
               <Route render={(props) => this.state.isAdmin ? <AddTeam {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/> : <Redirect to={{ pathname: '/login' }} />} path="/team/add" />  
               <Route render={(props) => this.state.isAdmin ? <AddRacer {...props} handleChange={this.handleChange}  handleCreateSubmit={this.handleCreateSubmit}/> : <Redirect to={{ pathname: '/login' }} />} path="/racer/add" />
               <Route render={(props) => this.state.isAdmin ? <AddProduct {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/> : <Redirect to={{ pathname: '/login' }} />} path="/product/add" />  
-              <Route render={(props) => <ArticleDetails {...props} selectedArticle={this.selectedArticle} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/article/details/:id" />
+              <Route render={(props) => <ArticleDetails {...props} username={this.username} selectedArticle={this.selectedArticle} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/article/details/:id" />
               <Route render={(props) => <TeamDetails {...props} selectedTeam={this.selectedTeam} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/team/details/:id" />
               <Route render={(props) => <RacerDetails {...props} selectedRacer={this.selectedRacer} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/racer/details/:id" />
               <Route render={(props) => <AddProduct {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit}/>} path="/product/add" />  
               <Route render={(props) => <ProductDetails {...props} selectedProduct={this.selectedProduct} handleCreateSubmit={this.handleCreateSubmit} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} />} path="/product/details/:id" />
               <Route render={(props) => this.state.username ? <AddComment {...props} handleChange={this.handleChange} handleCreateSubmit={this.handleCreateSubmit} username={this.username} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/article/comment/:id" />
               <Route render={(props) => this.state.isAdmin ? <EditArticle {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} selectedArticle={this.selectedArticle} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/article/edit/:id" />
-              <Route render={(props) => this.state.username ? <EditComment {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/comment/edit/:id" />
+              <Route render={(props) => this.state.username ? <EditComment {...props} username={this.username} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/comment/edit/:id" />
               <Route render={(props) => this.state.isAdmin ? <EditTeam {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/team/edit/:id" />
               <Route render={(props) => this.state.isAdmin ? <EditProduct {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/product/edit/:id" />
               <Route render={(props) => this.state.isAdmin ? <EditRacer {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/racer/edit/:id" />

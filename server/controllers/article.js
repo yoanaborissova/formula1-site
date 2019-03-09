@@ -95,7 +95,7 @@ module.exports = {
     
     Article.findByIdAndDelete(articleId)
     .then(() => {
-        Comment.deleteOne({
+        Comment.deleteMany({
           article: articleId
         })
         .then(() => {
