@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'; 
 
 class RacerDetails extends Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class RacerDetails extends Component {
     })
     .then(res => res.json());
     this.setState({selectedRacer: data.racer})
-    console.log(data);
   };
 
   render() {
@@ -32,11 +32,11 @@ class RacerDetails extends Component {
           <h6>Team: {this.state.selectedRacer.team}</h6>
         </div>
         <div>
-          <img className="img-article" src={this.state.selectedRacer.imageUrl} />
+          <img className="img-article" src={this.state.selectedRacer.imageUrl} alt="Not found." />
           <p>{this.state.selectedRacer.information}</p>
         </div>
-        {this.props.isAdmin ? <a href="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'racer', 'delete', this.state.selectedRacer._id)} className="button">Delete</a> : null}
-        {this.props.isAdmin ? <a href={"/racer/edit/" + this.state.selectedRacer._id}  className="button">Edit</a> : null}
+        {this.props.isAdmin ? <Link to="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'racer', 'delete', this.state.selectedRacer._id)} className="button">Delete</Link> : null}
+        {this.props.isAdmin ? <Link to={"/racer/edit/" + this.state.selectedRacer._id}  className="button">Edit</Link> : null}
       </div>
         }
       </main>  

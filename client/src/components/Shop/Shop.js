@@ -19,7 +19,6 @@ class Shop extends Component {
         })
         .then(res => res.json());
         this.setState({products: data.resProducts})
-        console.log(this.state.products);
       };
 
     render() {
@@ -43,7 +42,7 @@ class Shop extends Component {
                             <li className="product" key={p._id}>
                                 <h3>{p.name}</h3>
                                 <p>{p.price}$</p>
-                                <p className="img"><img src={p.imageUrl} /></p>
+                                <p className="img"><img src={p.imageUrl} alt="Not found." /></p>
                                 <div>
                                     <Link to={"product/details/" + p._id} className="button">Details</Link>                                    </div>
                                 </li>

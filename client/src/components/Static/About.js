@@ -5,7 +5,7 @@ function About(props) {
         <section className="basic" id="welcomeAnonymous">
             <h1>About Us</h1>
             <div className="article">
-            <h6>This is an exam website made as a final project for the January instance of ReactJS course at Software University. It is gonna be developed in future as a website for Bulgarian fans of Formula One, feauturing actual info, interesting facts, original articles and betting section.</h6>
+            <h6>This is an exam website made as a final project for the February instance of the ReactJS course at <a href="https://softuni.bg/" target="_blank" rel="noopener noreferrer">Software University</a>.</h6>
             </div>
         </section>
     );

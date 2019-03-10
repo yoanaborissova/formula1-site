@@ -40,7 +40,7 @@ class ArticleDetails extends Component {
             <p>{this.state.selectedArticle.content}</p>
           </div>
           <div>
-            <img className="img-article" src={this.state.selectedArticle.imageUrl} />
+            <img className="img-article" src={this.state.selectedArticle.imageUrl} alt="Not found." />
           </div>  
             {this.props.isAdmin ? <Link to="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'article', 'delete', this.state.selectedArticle._id)} className="button">Delete</Link> : null}
             {this.props.isAdmin ? <Link to={"/article/edit/" + this.state.selectedArticle._id} className="button">Edit</Link> : null}
@@ -50,6 +50,7 @@ class ArticleDetails extends Component {
         <h4>Comments:</h4>
         {!this.props.username ? <h6><Link to="/login">Login</Link> to add comments!</h6> : null}
         {
+        this.state.articleComments.length > 0 ?
         this.state.articleComments.map(c => 
           <div className="comment" key={c._id}>
             <h6>{c.date.substr(0, 10)}: {c.user}:</h6>
@@ -58,16 +59,17 @@ class ArticleDetails extends Component {
             </div>
             <div>
             {this.props.isAdmin || c.user === this.props.username ?
-            <a href="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'comment', 'delete', c._id)} className="button">Delete</a>
+            <Link to="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'comment', 'delete', c._id)} className="button">Delete</Link>
             : null}
             { c.user === this.props.username ?
-            <a href={"/comment/edit/" + c._id} className="button">Edit</a>
+            <Link to={"/comment/edit/" + c._id} className="button">Edit</Link>
             : null}
             </div>
           </div>
         )
+        :
+        <h3>No comments added yet.</h3>
         }
-        
         </div>
       </main>  
     );

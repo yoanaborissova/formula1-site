@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'; 
 
 class Teams extends Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class Teams extends Component {
     })
     .then(res => res.json());
     this.setState({teams: data.resTeams})
-    console.log(data);
   };
 
   render() {
@@ -26,14 +26,18 @@ class Teams extends Component {
         <main id="site-content">
         {this.props.isAdmin ? <form method="GET" action="/team/add" className="button-form"><button id="button-add" className="button">Add team</button></form> : null}
         {
+        this.state.teams.length > 0 ?
         this.state.teams.map(t => 
           <div className="article" key={t._id}>
               <h2>{t.name}</h2>
-                      <img className="img" src={t.imageUrl} />
+                      <img className="img" src={t.imageUrl} alt="Not found." />
                       <p>Points: {t.points}</p>
-              <a href={"team/details/" + t._id} className="button">More about this team</a>
+              <Link to={"team/details/" + t._id} className="button">More about this team</Link>
           </div>
         )
+        :
+          <h3>No comments added yet.</h3>
+          } 
         }
         </main>      
     );

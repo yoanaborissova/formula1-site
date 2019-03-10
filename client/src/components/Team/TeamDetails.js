@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'; 
 
 class TeamDetails extends Component {
   constructor(props) {
@@ -34,11 +35,11 @@ class TeamDetails extends Component {
           <h6>Racers: {this.state.selectedTeam.racers}</h6>
         </div>
         <div>
-          <img className="img-article" src={this.state.selectedTeam.imageUrl} />
+          <img className="img-article" src={this.state.selectedTeam.imageUrl} alt="Not found." />
           <p>{this.state.selectedTeam.description}</p>
         </div>
-        {this.props.isAdmin ? <a href="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'team', 'delete', this.state.selectedTeam._id)} className="button">Delete</a> : null}
-        {this.props.isAdmin ? <a href={"/team/edit/" + this.state.selectedTeam._id} className="button">Edit</a> : null}
+        {this.props.isAdmin ? <Link to="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'team', 'delete', this.state.selectedTeam._id)} className="button">Delete</Link> : null}
+        {this.props.isAdmin ? <Link to={"/team/edit/" + this.state.selectedTeam._id} className="button">Edit</Link> : null}
       </div>
         }
       </main>  

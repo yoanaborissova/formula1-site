@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Link, Switch } from 'react-router-dom';
+import { NavLink, Switch } from 'react-router-dom';
 
 function Navbar(props) {
     return (
@@ -23,7 +23,7 @@ function Navbar(props) {
                                     Welcome, {props.username}!
                                 </li>
                                 <li>
-                                    <a href="" onClick={props.logout}> Logout</a>
+                                    <NavLink to="#" onClick={props.logout}> Logout</NavLink>
                                 </li>
                             </ul>                               
                         </React.Fragment>
@@ -31,10 +31,10 @@ function Navbar(props) {
                         <React.Fragment>
                             <ul>
                                 <li>
-                                    <a href="/register"> Register</a>
+                                    <NavLink to="/register"> Register</NavLink>
                                 </li>
                                 <li>
-                                    <a href="/login"> Login</a>
+                                    <NavLink to="/login"> Login</NavLink>
                                 </li>
                             </ul>
                         </React.Fragment>                        

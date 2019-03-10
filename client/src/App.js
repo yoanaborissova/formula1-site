@@ -1,5 +1,5 @@
-import React, { Component, Suspense } from 'react';
-import { Router, Link, Route, Switch, Redirect } from 'react-router-dom';
+import React, { Component, lazy, Suspense } from 'react';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import createBrowserHistory from 'history/createBrowserHistory';
@@ -7,29 +7,30 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import './App.css';
 import Navbar from './components/Static/Navbar';
 import Footer from './components/Static/Footer';
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
-import About from './components/Static/About';
 import Home from './components/Article/Home';
-import Teams from './components/Team/Teams';
-import Racers from './components/Racer/Racers';
-import AddArticle from './components/Article/AddArticle';
-import AddTeam from './components/Team/AddTeam';
-import AddRacer from './components/Racer/AddRacer';
-import Shop from './components/Shop/Shop';
-import AllOrders from './components/Shop/AllOrders';
-import MyOrders from './components/Shop/MyOrders';
-import AddProduct from './components/Shop/AddProduct';
-import ArticleDetails from './components/Article/ArticleDetails';
-import TeamDetails from './components/Team/TeamDetails';
-import RacerDetails from './components/Racer/RacerDetails';
-import ProductDetails from './components/Shop/ProductDetails';
-import AddComment from './components/Comment/AddComment';
-import EditArticle from './components/Article/EditArticle';
-import EditComment from './components/Comment/EditComment';
-import EditTeam from './components/Team/EditTeam';
-import EditRacer from './components/Racer/EditRacer';
-import EditProduct from './components/Shop/EditProduct';
+const Login = lazy(() => import('./components/Auth/Login'));
+const Register = lazy(() => import('./components/Auth/Register'));
+const About = lazy(() => import('./components/Static/About'));
+const Teams = lazy(() => import('./components/Team/Teams'));
+const Racers = lazy(() => import('./components/Racer/Racers'));
+const AddArticle = lazy(() => import('./components/Article/AddArticle'));
+const AddTeam = lazy(() => import('./components/Team/AddTeam'));
+const AddRacer = lazy(() => import('./components/Racer/AddRacer'));
+const Shop = lazy(() => import('./components/Shop/Shop'));
+const AllOrders = lazy(() => import('./components/Shop/AllOrders'));
+const MyOrders = lazy(() => import('./components/Shop/MyOrders'));
+const AddProduct = lazy(() => import('./components/Shop/AddProduct'));
+const ArticleDetails = lazy(() => import('./components/Article/ArticleDetails'));
+const TeamDetails = lazy(() => import('./components/Team/TeamDetails'));
+const RacerDetails = lazy(() => import('./components/Racer/RacerDetails'));
+const ProductDetails = lazy(() => import('./components/Shop/ProductDetails'));
+const AddComment = lazy(() => import('./components/Comment/AddComment'));
+const EditArticle = lazy(() => import('./components/Article/EditArticle'));
+const EditComment = lazy(() => import('./components/Comment/EditComment'));
+const EditTeam = lazy(() => import('./components/Team/EditTeam'));
+const EditRacer = lazy(() => import('./components/Racer/EditRacer'));
+const EditProduct = lazy(() => import('./components/Shop/EditProduct'));
+const NotFound = lazy(() => import('./components/Static/NotFound'));
 
 class App extends Component {
   constructor(props) {
@@ -69,8 +70,6 @@ class App extends Component {
   }
 
   handleChange(event) {
-    // console.log(`${[event.target.name]}: ${event.target.value}`)
-    // console.log(this.state);
     this.setState({
       [event.target.name]: event.target.value
     })
@@ -221,6 +220,7 @@ class App extends Component {
       <div className="App">
           <div id="container">
             <ToastContainer autoClose={2500} hideProgressBar={true} closeButton={false}></ToastContainer>
+            <Suspense fallback={<h3>Loading...</h3>}>
             <Navbar username={this.state.username} isAdmin={this.state.isAdmin} logout = {this.logout} {...this.state}/>
             <Switch>
               <Route render={(props) => <Home isAdmin={this.state.isAdmin} articles={this.state.articles} {...this.state} {...props}/>} path="/" exact/>
@@ -246,8 +246,10 @@ class App extends Component {
               <Route render={(props) => this.state.isAdmin ? <EditTeam {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/team/edit/:id" />
               <Route render={(props) => this.state.isAdmin ? <EditProduct {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/product/edit/:id" />
               <Route render={(props) => this.state.isAdmin ? <EditRacer {...props} handleChange={this.handleChange} handleEditDeleteSubmit={this.handleEditDeleteSubmit} {...this.state} /> : <Redirect to={{ pathname: '/login' }} />} path="/racer/edit/:id" />
-              <Route render={() => <About />} path="/about" />     
+              <Route render={() => <About />} path="/about" />  
+              <Route component={() => <NotFound />}/>   
             </Switch>
+            </Suspense>
             <Footer />
           </div>
       </div>
