@@ -25,6 +25,7 @@ class ArticleDetails extends Component {
     this.setState({
       selectedArticle: data.article,
       articleComments: data.comments,
+      articleDate: data.article.date.substr(0, 10),
       article: data.article._id
     })
   };
@@ -42,6 +43,9 @@ class ArticleDetails extends Component {
           <div>
             <img className="img-article" src={this.state.selectedArticle.imageUrl} alt="Not found." />
           </div>  
+          <div>
+            <p>{this.state.articleDate}</p>
+          </div>
             {this.props.isAdmin ? <Link to="#" onClick={(event) => this.props.handleEditDeleteSubmit(event, this.state, 'article', 'delete', this.state.selectedArticle._id)} className="button">Delete</Link> : null}
             {this.props.isAdmin ? <Link to={"/article/edit/" + this.state.selectedArticle._id} className="button">Edit</Link> : null}
             {this.props.username ? <Link to={"/article/comment/" + this.state.selectedArticle._id} className="button">Add a comment</Link> : null}
