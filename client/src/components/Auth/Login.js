@@ -20,7 +20,7 @@ class Login extends Component {
         <section className="login" id="loginView">
           <form onSubmit={(event) => this.props.handleSubmit(event, this.state, false)}>
             <p className="field">
-              <label htmlFor="username" id>Username</label>
+              <label htmlFor="username">Username</label>
               <span className="input">
                 <input onChange={this.handleChange} type="text" name="username" id="username" placeholder="Username" />
                 <span className="actions" />

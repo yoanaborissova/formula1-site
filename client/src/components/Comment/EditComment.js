@@ -6,7 +6,6 @@ class EditArticle extends Component {
 
         this.state = {
             content: null,
-            selectedArticle: null,
             user: this.props.username
         }
 
@@ -25,8 +24,6 @@ class EditArticle extends Component {
             content: data.comment.content,
             article: data.comment.article
         })
-        
-        console.log(this.state);
       };
 
     render() {

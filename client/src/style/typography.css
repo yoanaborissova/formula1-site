@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou');
+@import url('https://fonts.googleapis.com/css?family=Crete+Round');
 
 html {
 	font: 12px/1.5 sans-serif;
 }
 
 #navbar {
-	font-family: 'ZCOOL QingKe HuangYou', cursive;
+	font-family: 'Crete Round', serif;
 }
 
 @media screen and (min-width: 500px) {
