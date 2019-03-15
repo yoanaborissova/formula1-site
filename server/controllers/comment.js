@@ -113,31 +113,6 @@ module.exports = {
             error
           })
       });
-
-    // Comment.findByIdAndDelete(commentId)
-    //   .then(() => {
-    //     Article.findById(req.body.selectedArticle._id)
-    //       .then((article) => {
-    //         article.comments = article.comments.filter(function (ele) {
-    //           return ele != commentId;
-    //         });
-
-    //         article.save()
-    //           .then(() => {
-    //             res.status(200)
-    //               .json({
-    //                 message: 'Comment deleted successfully.',
-    //               })
-    //           })
-    //       })
-    //   })
-    //   .catch((error) => {
-    //     res.status(500)
-    //       .json({
-    //         message: 'Something went wrong.',
-    //         error
-    //       })
-    //   });
   }
 }
 

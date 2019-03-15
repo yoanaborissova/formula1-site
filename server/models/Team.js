@@ -17,7 +17,8 @@ const teamSchema = new Schema({
     type: Schema.Types.String
   },
   points: {
-    type: Schema.Types.Number
+    type: Schema.Types.Number,
+    default: 0
   }
 });
 

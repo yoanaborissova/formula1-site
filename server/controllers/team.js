@@ -11,15 +11,18 @@ module.exports = {
           .json({ message: 'Fetched teams successfully.', resTeams });
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        console.log(error);
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   },
   createTeam: (req, res) => {
     const teamObj = req.body;
-    teamObj.racers = teamObj.racers.split(',').join(', ');
+    if (teamObj.racers !== null){
+      teamObj.racers = teamObj.racers.split(',').join(', ');
+    }
     Team.create(teamObj)
     .then((team) => {
       res.status(200)
@@ -29,10 +32,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   },
   teamDetails: (req, res) => {
@@ -46,10 +50,11 @@ module.exports = {
         })
     })
     .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      throw error;
+      res.status(500)
+          .json({
+            message: 'Something went wrong.',
+            error
+          })
     });
   },
   editTeam: (req, res) => {
@@ -73,10 +78,11 @@ module.exports = {
           })
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        throw error;
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   },
   deleteTeam: (req, res) => {
@@ -90,10 +96,11 @@ module.exports = {
           })
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        throw error;
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   }
 }

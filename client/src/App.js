@@ -101,7 +101,7 @@ class App extends Component {
           localStorage.setItem('isAdmin', responseBody.isAdmin);
           localStorage.setItem('token', responseBody.token);
         
-          toast.success(`Welcome ${responseBody.username}!`);
+          toast.success(`Welcome, ${responseBody.username}!`);
         } else {
           toast.error(responseBody.message)
         }

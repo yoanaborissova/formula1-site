@@ -10,10 +10,11 @@ module.exports = {
           .json({ message: 'Fetched racers successfully.', resRacers });
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        next(error);
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   },
   createRacer: (req, res) => {
@@ -27,10 +28,11 @@ module.exports = {
           })
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        next(error);
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   },
   racerDetails: (req, res) => {
@@ -44,10 +46,11 @@ module.exports = {
           })
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        throw error;
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   },
   editRacer: (req, res) => {
@@ -71,10 +74,11 @@ module.exports = {
           })
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        throw error;
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   },
   deleteRacer: (req, res) => {
@@ -88,10 +92,11 @@ module.exports = {
           })
       })
       .catch((error) => {
-        if (!error.statusCode) {
-          error.statusCode = 500;
-        }
-        throw error;
+        res.status(500)
+            .json({
+              message: 'Something went wrong.',
+              error
+            })
       });
   }
 }

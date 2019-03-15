@@ -79,7 +79,7 @@ class EditTeam extends Component {
                         <span className="actions" />
                       </span>
                     </p>
-                    <input className="button" type="submit" defaultValue="Add team" id="submitLogin" />
+                    <input className="button" type="submit" value="Save" id="submitLogin" />
                   </div>
                         </form>
                     </section>

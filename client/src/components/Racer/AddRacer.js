@@ -56,7 +56,7 @@ class AddRacer extends Component {
                                     <span className="actions" />
                                 </span>
                             </p>
-                            <input className="button" type="submit" defaultValue="Add racer" id="submitLogin" />
+                            <input className="button" type="submit" value="Add racer" id="submitLogin" />
                         </form>
                     </section>
                 </section>
