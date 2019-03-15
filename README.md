@@ -5,7 +5,7 @@ The site has two main parts:
 * __Blog section__ with three different categories.
 	* __Home (articles timeline)__: there are published the latest news about the new season.
 	* __Teams__: there are listed all teams that are currently taking in Formula 1, with information about them, their racers and points.
-	* __Racers__: ther are listed all racers that are currently racing at Formula 1, with information about them, their teams and points.
+	* __Racers__: there are listed all racers that are currently racing at Formula 1, with information about them, their teams and points.
 * __Shop section__ with available merchandise.
 ## Roles
 * __Guest users__ are allowed to: 
