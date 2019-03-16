@@ -101,7 +101,7 @@ module.exports = {
         } else {
           res.status(500)
           .json({
-            message: 'You are not allowed to delete this comment'
+            message: 'You are not allowed to delete this comment.'
           })
         }
       })

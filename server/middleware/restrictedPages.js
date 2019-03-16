@@ -10,10 +10,9 @@ module.exports = {
         .json({ message: 'This action is allowed only for logged in users.' });
     }
 
-    const token = authHeaders.split(' ')[1];
+    const token = req.get('Authorization').split(' ')[1];
 
     let decodedToken;
-
     try {
       decodedToken = jwt.verify(token, 'somesupersecret')
     } catch (error) {
