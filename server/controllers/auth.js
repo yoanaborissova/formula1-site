@@ -24,13 +24,22 @@ module.exports = {
       if (password === repeatPassword){
       const salt = encryption.generateSalt();
       const hashedPassword = encryption.generateHashedPassword(salt, password);
+      
       User.create({ 
         username,
         hashedPassword,
         salt
       }).then((user) => {
+        const token = jwt.sign({ 
+          username: user.username,
+          userId: user._id.toString(),
+          isAdmin: user.roles.indexOf('Admin') !== 0
+        }
+        , 'somesupersecret'
+        , { expiresIn: '1h' });
+        
         res.status(201)
-          .json({ message: 'User created!', userId: user._id, username: user.username });
+          .json({ message: 'User created!', userId: user._id, username: user.username, token });
       })
       .catch((error) => {
         if (!error.statusCode) {
